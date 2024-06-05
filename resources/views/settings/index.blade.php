@@ -3,7 +3,7 @@
 
 {{-- Page Title --}}
 @section('title')
-Dashboard
+Settings
 @endsection
 
 {{-- Optionally add something here to be added to the <head> like css or meta tag --}}

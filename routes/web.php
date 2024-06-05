@@ -34,6 +34,13 @@ Route::middleware(Authenticated::class)->prefix('admin')->namespace('\App\Http\C
         Route::get('/', 'ProfileController@index');
         Route::post('/update', 'ProfileController@update');
     });
+    Route::prefix('users')->group(function(){
+        Route::get('/', 'UsersController@index');
+        Route::get('/form', 'UsersController@form');
+        Route::get('/edit/{id}', 'UsersController@edit');
+        Route::post('/store', 'UsersController@store');
+        Route::delete('/delete/{id}', 'UsersController@delete');
+    });
 
 });
 

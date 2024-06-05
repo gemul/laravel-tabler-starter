@@ -56,3 +56,11 @@
         </span>
     </a>
 </li>
+<li class="nav-item">
+    <a class="nav-link" href="/admin/users">
+        <i class="mdi mdi-card-account-details-outline me-2 fs-2"></i>
+        <span class="nav-link-title">
+            Users
+        </span>
+    </a>
+</li>

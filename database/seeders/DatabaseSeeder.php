@@ -3,9 +3,9 @@
 namespace Database\Seeders;
 
 use App\Models\User;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
 class DatabaseSeeder extends Seeder
 {
@@ -20,5 +20,7 @@ class DatabaseSeeder extends Seeder
             'email' => 'dev@example.org',
             'password' => Hash::make('password'),
         ]);
+        //make 20 dummy users
+        User::factory()->count(35)->create();
     }
 }
