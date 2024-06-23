@@ -164,5 +164,6 @@ if(auth()->check()) {
 <script src="{{ asset("/tabler-assets/js/tabler.min.js")}}" defer></script>
 <script src="{{ asset("/tabler-assets/js/demo.min.js")}}" defer></script>
 @yield('scripts')
+@stack('scripts')
 </body>
 </html>

@@ -29,12 +29,34 @@ Users Management
         </div>
     </div>
 </div>
+@if(session()->has('error'))
+<div class="row mt-1">
+    <div class="col-12">
+        <div class="alert alert-danger mb-1">
+            {{ session()->get('error') }}
+        </div>
+    </div>
+</div>
+@endif
+@if(session()->has('success'))
+<div class="row mt-1">
+    <div class="col-12">
+        <div class="alert alert-success mb-1">
+            {{ session()->get('success') }}
+        </div>
+    </div>
+</div>
+@endif
 <div class="row row-cards mt-1">
     @foreach ($users as $user)
     <div class="col-md-6 col-lg-3">
         <div class="card">
             <div class="card-body p-4 text-center">
-            <span class="avatar avatar-xl mb-3 rounded" style="background-image: url(./static/avatars/000m.jpg)"></span>
+            @if ($user->avatar)
+                <span class="avatar avatar-xl mb-3 rounded" style="background-image: url(/storage/avatar/{{ $user->avatar }})"></span>
+            @else
+                <span class="avatar avatar-xl mb-3 rounded" style="background-image: url(./static/avatars/000m.jpg)"></span>
+            @endif
             <h3 class="m-0 mb-1"><a href="#">{{ $user->name }}</a></h3>
             <div class="text-secondary">{{ $user->username }}</div>
             <div class="mt-3">
@@ -42,10 +64,10 @@ Users Management
             </div>
             </div>
             <div class="d-flex">
-            <a href="#" class="card-btn p-1">
+            <a href="/admin/users/edit/{{ $user->id_user }}" class="card-btn p-1">
                 <i class="mdi mdi-pencil-outline me-2 fs-2"></i>
                 Edit</a>
-            <a href="#" class="card-btn p-1">
+            <a onclick="deleteItem('{{ $user->id_user }}')" class="card-btn p-1">
                 <i class="mdi mdi-trash-can-outline me-2 fs-2"></i>
                 Delete</a>
             </div>
@@ -101,70 +123,61 @@ Users Management
 {{-- Scripts here to be added at the bottom of page after </body> --}}
 @section('scripts')
 <script type="text/javascript">
-//on form submit (without jquery)
-document.getElementById('change-password-form').addEventListener('submit', function(e) {
-    e.preventDefault();
-    var form = document.getElementById('change-password-form');
-    var formData = new FormData(form);
-    var xhr = new XMLHttpRequest();
-    xhr.open('POST', '/admin/settings/change_password', true);
-    xhr.setRequestHeader('X-CSRF-TOKEN', document.querySelector('meta[name="csrf-token"]').getAttribute('content'));
-    //on sending request
-    xhr.onloadstart = function() {
+    function deleteItem(id){
         Swal.fire({
-            title: 'Please Wait',
-            html: 'Changing password...',
-            allowOutsideClick: false,
-            didOpen: () => {
-                Swal.showLoading();
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const xhr = new XMLHttpRequest();
+                xhr.open('DELETE', '/admin/users/delete/'+id, true);
+                xhr.setRequestHeader('X-CSRF-TOKEN', document.querySelector('meta[name="csrf-token"]').getAttribute('content'));
+                xhr.onloadstart = function() {
+                    Swal.fire({
+                        title: 'Please Wait',
+                        html: 'Deleting user...',
+                        allowOutsideClick: false,
+                        didOpen: () => {
+                            Swal.showLoading();
+                        }
+                    });
+                };
+                xhr.onload = function() {
+                    if (xhr.status >= 200 && xhr.status < 400) {
+                        var response = JSON.parse(xhr.responseText);
+                        if (response.status == 'success') {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Success',
+                                text: response.message
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    window.location.reload();
+                                }
+                            });
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: response.message
+                            });
+                        }
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'Something went wrong'
+                        });
+                    }
+                };
+                xhr.send();
             }
         });
-    };
-    //on success
-    xhr.onload = function() {
-        if (xhr.status >= 200 && xhr.status < 400) {
-            var response = JSON.parse(xhr.responseText);
-            if (response.status == 'success') {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Success',
-                    text: response.message
-                });
-                //redirect to dashboard after login
-                window.location.href = '/admin/dashboard';
-            } else if(response.status == 'validation_error') { 
-                //show validation errors
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Validation Error',
-                    html: response.messages.join('<br>'),
-                });
-            } else {
-                //show error message
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: response.message
-                });
-            }
-        }else{
-            Swal.fire({
-                icon: 'error',
-                title: 'Error',
-                text: 'Request failed'
-            });
-        }
-    };
-    //on error
-    xhr.onerror = function() {
-        Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: 'Something went wrong. Please try again later.'
-        });
-    };
-    //send request
-    xhr.send(formData);
-});
+    }
 </script>
 @endsection

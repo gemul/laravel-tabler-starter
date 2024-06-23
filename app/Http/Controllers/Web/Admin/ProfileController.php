@@ -30,7 +30,7 @@ class ProfileController extends Controller
             'name' => 'required',
             'username' => 'required|unique:user,username,'.$user->id_user.',id_user',
             'email' => 'required|email',
-            'avatar' => 'nullable|image|mimes:jpeg,png,jpg|max:1024',
+            'avatar' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]); 
 
         //check if validation fails
@@ -67,7 +67,7 @@ class ProfileController extends Controller
                 });
                 //save the image to the storage
                 Storage::disk('public')->makeDirectory('avatar');
-                $image->save(storage_path('app/public/avatar/'.$avatar_name));
+                Storage::disk('public')->put('avatar/' . $avatar_name, $image->toJpeg(80));
                 $user->avatar = $avatar_name;
             }
             $user->save();

@@ -39,7 +39,7 @@ Profile
                                 <input type="text" class="form-control" id="email" name="email" placeholder="Email" value="{{ $user->email}}">
                             </div>
                             <div class="mb-3">
-                                <label class="form-label" for="avatar">Change Avatar (1MB max)</label>
+                                <label class="form-label" for="avatar">Change Avatar (2MB max)</label>
                                 <input type="file" class="form-control" id="avatar" name="avatar" placeholder="Change Avatar" accept=".jpg, .png" onchange="checkFilesize(this)">
                             </div>
                             <button type="submit" class="btn btn-primary btn-color">Save Changes</button>
