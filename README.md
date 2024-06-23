@@ -47,14 +47,9 @@ I’ve set up the Tabler template and divided it into different parts such as th
 ### Authentication scaffolding
 In this starter kit, user authentication features are already set up, including registration, login, logout, password reset, password change, user avatars, and email verification.
 ### ULID based primary key for future-proofing
-For this starter project, it’s it is advised (not enforced) to use ULID as the main identifier. One of the reason is to help ensure that the client-side apps work well with the API in the future because it doesn't rely on incremental integer, so that the client side app can safely generate an ID without any conflict with server-generated ID. I've already set up the basic tables in the migrations to use ulid. See [ULID](https://github.com/ulid/spec).
+For this starter project, it’s it is advised (not enforced) to use ULID as the main identifier. One of the reason is to help ensure that the client-side apps work well with the API in the future because it doesn't rely on incremental integer, so that the client side app can safely generate an ID without any conflict with server-generated ID. And unlike UUID, ULID still maintain orders of creation thus make it sortable. I've already set up the basic tables in the migrations to use ulid. See [ULID](https://github.com/ulid/spec).
 ### JS XHR / Ajax form submission
 We recommend using XHR/Ajax instead of regular HTTP form submission. This allows for better control of requests, such as displaying loading animations or handling server responses like showing errors or validation messages. We've provided an example for the login page using vanilla JavaScript XHR, but you can also use XHR libraries like jQuery or axios if you prefer.
-
-## To-do⌛
-- Authentication boilerplate 
-- CRUD Boilerplate
-- User management and access control
 
 ## License
 
