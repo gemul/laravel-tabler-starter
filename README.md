@@ -55,4 +55,4 @@ We recommend using XHR/Ajax instead of regular HTTP form submission. This allows
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
 
-Tabler is licensed under The MIT License (MIT). Which means that you can use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the final products. But you always need to state that Colorlib is the original author of this template.
+Tabler is licensed under The [MIT license](https://opensource.org/licenses/MIT). Which means that you can use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the final products.
